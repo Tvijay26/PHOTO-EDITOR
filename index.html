@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Photoshop Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Advanced Photoshop Editor</h1>
+            <div class="header-actions">
+                <button id="new-project" class="btn"><i class="fas fa-file"></i> New</button>
+                <button id="open-file" class="btn"><i class="fas fa-folder-open"></i> Open</button>
+                <button id="save-file" class="btn"><i class="fas fa-save"></i> Save</button>
+                <input type="file" id="file-input" accept="image/*" style="display: none;">
+            </div>
+        </header>
+
+        <div class="main-content">
+            <aside class="toolbox">
+                <div class="tool-section">
+                    <h3>Tools</h3>
+                    <div class="tool-grid">
+                        <button class="tool-btn active" data-tool="select"><i class="fas fa-mouse-pointer"></i></button>
+                        <button class="tool-btn" data-tool="crop"><i class="fas fa-crop"></i></button>
+                        <button class="tool-btn" data-tool="brush"><i class="fas fa-paint-brush"></i></button>
+                        <button class="tool-btn" data-tool="eraser"><i class="fas fa-eraser"></i></button>
+                        <button class="tool-btn" data-tool="text"><i class="fas fa-font"></i></button>
+                        <button class="tool-btn" data-tool="shape"><i class="fas fa-shapes"></i></button>
+                        <button class="tool-btn" data-tool="gradient"><i class="fas fa-fill-drip"></i></button>
+                        <button class="tool-btn" data-tool="clone"><i class="fas fa-clone"></i></button>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Layers</h3>
+                    <div class="layers-container">
+                        <div class="layer active">
+                            <span>Background</span>
+                            <div class="layer-actions">
+                                <button class="layer-btn"><i class="fas fa-eye"></i></button>
+                                <button class="layer-btn"><i class="fas fa-lock"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="add-layer" class="btn"><i class="fas fa-plus"></i> Add Layer</button>
+                </div>
+            </aside>
+
+            <div class="workspace">
+                <div class="canvas-container">
+                    <canvas id="main-canvas"></canvas>
+                    <div class="canvas-overlay" id="canvas-overlay"></div>
+                </div>
+            </div>
+
+            <aside class="properties-panel">
+                <div class="properties-tabs">
+                    <button class="tab-btn active" data-tab="adjustments">Adjustments</button>
+                    <button class="tab-btn" data-tab="filters">Filters</button>
+                    <button class="tab-btn" data-tab="effects">Effects</button>
+                </div>
+
+                <div class="properties-content">
+                    <div id="adjustments" class="tab-content active">
+                        <div class="property-group">
+                            <label>Brightness</label>
+                            <input type="range" id="brightness" min="-100" max="100" value="0">
+                        </div>
+                        <div class="property-group">
+                            <label>Contrast</label>
+                            <input type="range" id="contrast" min="-100" max="100" value="0">
+                        </div>
+                        <div class="property-group">
+                            <label>Saturation</label>
+                            <input type="range" id="saturation" min="-100" max="100" value="0">
+                        </div>
+                        <div class="property-group">
+                            <label>Hue</label>
+                            <input type="range" id="hue" min="-180" max="180" value="0">
+                        </div>
+                        <div class="property-group">
+                            <label>Exposure</label>
+                            <input type="range" id="exposure" min="-100" max="100" value="0">
+                        </div>
+                    </div>
+
+                    <div id="filters" class="tab-content">
+                        <div class="filter-grid">
+                            <button class="filter-btn" data-filter="blur">Blur</button>
+                            <button class="filter-btn" data-filter="sharpen">Sharpen</button>
+                            <button class="filter-btn" data-filter="grayscale">Grayscale</button>
+                            <button class="filter-btn" data-filter="sepia">Sepia</button>
+                            <button class="filter-btn" data-filter="invert">Invert</button>
+                            <button class="filter-btn" data-filter="noise">Noise</button>
+                            <button class="filter-btn" data-filter="pixelate">Pixelate</button>
+                            <button class="filter-btn" data-filter="edge">Edge Detect</button>
+                        </div>
+                        <div class="property-group" id="filter-intensity-group" style="display: none;">
+                            <label>Intensity</label>
+                            <input type="range" id="filter-intensity" min="0" max="100" value="50">
+                        </div>
+                    </div>
+
+                    <div id="effects" class="tab-content">
+                        <div class="property-group">
+                            <label>Vignette</label>
+                            <input type="range" id="vignette" min="0" max="100" value="0">
+                        </div>
+                        <div class="property-group">
+                            <label>Film Grain</label>
+                            <input type="range" id="grain" min="0" max="100" value="0">
+                        </div>
+                        <div class="property-group">
+                            <label>Vibrance</label>
+                            <input type="range" id="vibrance" min="-100" max="100" value="0">
+                        </div>
+                        <button id="apply-lut" class="btn">Apply LUT</button>
+                        <div class="lut-presets">
+                            <div class="lut-preset" data-lut="cool"></div>
+                            <div class="lut-preset" data-lut="warm"></div>
+                            <div class="lut-preset" data-lut="dramatic"></div>
+                            <div class="lut-preset" data-lut="vintage"></div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <div class="status-bar">
+            <span id="cursor-position">X: 0, Y: 0</span>
+            <span id="zoom-level">100%</span>
+            <span id="image-dimensions">0 x 0 px</span>
+        </div>
+    </div>
+<!-- Add this section below the workspace div -->
+<div class="image-section">
+    <div class="image-tools">
+        <h3>Image Tools</h3>
+        <div class="image-actions">
+            <button id="flip-horizontal" class="btn"><i class="fas fa-arrows-alt-h"></i> Flip H</button>
+            <button id="flip-vertical" class="btn"><i class="fas fa-arrows-alt-v"></i> Flip V</button>
+            <button id="rotate-left" class="btn"><i class="fas fa-undo"></i> Rotate Left</button>
+            <button id="rotate-right" class="btn"><i class="fas fa-redo"></i> Rotate Right</button>
+            <button id="reset-image" class="btn"><i class="fas fa-sync-alt"></i> Reset</button>
+        </div>
+        
+        <div class="image-properties">
+            <div class="property-group">
+                <label>Opacity</label>
+                <input type="range" id="opacity" min="0" max="100" value="100">
+            </div>
+            <div class="property-group">
+                <label>Blend Mode</label>
+                <select id="blend-mode">
+                    <option value="normal">Normal</option>
+                    <option value="multiply">Multiply</option>
+                    <option value="screen">Screen</option>
+                    <option value="overlay">Overlay</option>
+                    <option value="darken">Darken</option>
+                    <option value="lighten">Lighten</option>
+                </select>
+            </div>
+            <div class="property-group">
+                <label>Color Overlay</label>
+                <input type="color" id="color-overlay" value="#000000">
+                <input type="range" id="color-overlay-opacity" min="0" max="100" value="0">
+            </div>
+        </div>
+    </div>
+    
+    <div class="image-presets">
+        <h3>Presets</h3>
+        <div class="preset-grid">
+            <div class="preset" data-preset="vintage">
+                <img src="https://via.placeholder.com/50" alt="Vintage">
+                <span>Vintage</span>
+            </div>
+            <div class="preset" data-preset="dramatic">
+                <img src="https://via.placeholder.com/50" alt="Dramatic">
+                <span>Dramatic</span>
+            </div>
+            <div class="preset" data-preset="portrait">
+                <img src="https://via.placeholder.com/50" alt="Portrait">
+                <span>Portrait</span>
+            </div>
+            <div class="preset" data-preset="cool">
+                <img src="https://via.placeholder.com/50" alt="Cool">
+                <span>Cool</span>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
